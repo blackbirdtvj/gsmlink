@@ -1,0 +1,6 @@
+[submodule "lib/TinyGSM-fork"]
+	path = lib/TinyGSM-fork
+	url = https://github.com/vahidtvj/TinyGSM-fork/
+[submodule "lib/TinySMS"]
+	path = lib/TinySMS
+	url = https://github.com/vahidtvj/TinySMS
