@@ -183,6 +183,7 @@ void handleCall()
 }
 
 volatile u16_t counter = 0;
+volatile uint8_t updateAttempts = 0;
 void loop()
 {
     ArduinoOTA.handle();
@@ -220,7 +221,11 @@ void loop()
     }
     if (otaFlag)
     {
-        if (isNTPSet)
+        if (updateAttempts++ > 3)
+        {
+            otaFlag = false;
+        }
+        else if (isNTPSet)
             otaFlag = !doOTA();
     }
     if (millis() - clearMillis > 14400000UL)
