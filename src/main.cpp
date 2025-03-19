@@ -148,7 +148,7 @@ void setup()
     }
     else
     {
-        REMOTE_DBG("RESET: " + resetReason);
+        REMOTE_DBG("Version " + version + "\nRESET: " + resetReason);
     }
     clearMillis = millis();
 }
