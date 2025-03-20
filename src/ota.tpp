@@ -93,18 +93,21 @@ bool doOTA()
     }
     bool synced = body.indexOf("synced") != -1;
     DEBUG_PRINT("Load from S3: ");
-    DEBUG_PRINT(synced);
-    if (synced)
+    DEBUG_PRINTLN(synced);
+    if (synced == true)
         url = BIN_ALT_URL;
-
-    JsonArray assets = doc["assets"].as<JsonArray>();
-    for (JsonObject asset : assets)
+    else
     {
-        String name = asset["name"];
-        if (name == BIN_NAME)
+
+        JsonArray assets = doc["assets"].as<JsonArray>();
+        for (JsonObject asset : assets)
         {
-            url = asset["browser_download_url"].as<String>();
-            break;
+            String name = asset["name"];
+            if (name == BIN_NAME)
+            {
+                url = asset["browser_download_url"].as<String>();
+                break;
+            }
         }
     }
 
