@@ -69,6 +69,7 @@ jobs:
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
           ENCRYPTION_IV: ${{ secrets.ENCRYPTION_IV }}
         run: |
+          mkdir -p firmware
           openssl enc -aes-256-cbc -in .pio/build/GSMS/firmware.bin -out ./firmware/GSMS.bin -K $ENCRYPTION_KEY -iv $ENCRYPTION_IV
           openssl enc -aes-256-cbc -in .pio/build/GSMV/firmware.bin -out ./firmware/GSMV.bin -K $ENCRYPTION_KEY -iv $ENCRYPTION_IV
 
