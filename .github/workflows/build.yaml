@@ -82,7 +82,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "default"
           SOURCE_DIR: "./firmware"
-          S3_ENDPOINT_URL: ${{ secrets.S3_ENDPOINT_URL }}
+          AWS_S3_ENDPOINT: ${{ secrets.S3_ENDPOINT_URL }}
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
 
       - name: Create Release
