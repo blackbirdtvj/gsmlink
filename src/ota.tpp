@@ -86,6 +86,16 @@ bool doOTA()
             DEBUG_PRINTLN("Invalid line format");
         }
     }
+    else
+    {
+        DEBUG_PRINTLN("Invalid body format");
+        return false;
+    }
+    bool synced = body.indexOf("synced") != -1;
+    DEBUG_PRINT("Load from S3: ");
+    DEBUG_PRINT(synced);
+    if (synced)
+        url = BIN_ALT_URL;
 
     JsonArray assets = doc["assets"].as<JsonArray>();
     for (JsonObject asset : assets)

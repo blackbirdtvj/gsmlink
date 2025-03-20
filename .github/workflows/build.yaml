@@ -96,6 +96,7 @@ jobs:
           body: |
             GSMS.bin ${{ env.GSMS_MD5 }} ${{ env.GSMS_file_size }}
             GSMV.bin ${{ env.GSMV_MD5 }} ${{ env.GSMV_file_size }}
+            synced
           draft: false
           prerelease: false
 
