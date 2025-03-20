@@ -221,7 +221,7 @@ void loop()
     }
     if (otaFlag)
     {
-        if (updateAttempts++ > 3)
+        if (updateAttempts++ >= 3)
         {
             otaFlag = false;
         }

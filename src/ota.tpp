@@ -93,10 +93,11 @@ bool doOTA()
         String name = asset["name"];
         if (name == BIN_NAME)
         {
-            url = asset["url"].as<String>();
+            url = asset["browser_download_url"].as<String>();
             break;
         }
     }
+
     DEBUG_PRINT("tag: ");
     DEBUG_PRINTLN(tag);
     DEBUG_PRINT("url: ");
@@ -113,13 +114,17 @@ bool doOTA()
     preferences.getBytes("aes_iv", iv, sizeof(iv));
     preferences.end();
 
+    // url = "http://192.168.1.3:8000/GSMV.bin";
     DEBUG_PRINTLN("\nStart update");
     http.begin(client, url);
+    // http.begin(url);
     http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
     http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
     http.addHeader("Accept", "application/octet-stream");
     // http.addHeader("Authorization", ENV_GIT_PAT);
-    http.addHeader("X-GitHub-Api-Version", "2022-11-28");
+    // http.addHeader("X-GitHub-Api-Version", "2022-11-28");
+
+    DEBUG_PRINTLN(esp_get_free_heap_size());
     for (uint8_t i = 0; i < retry; i++)
     {
         httpResponseCode = http.GET();
