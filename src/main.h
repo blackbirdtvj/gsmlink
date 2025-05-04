@@ -17,6 +17,7 @@
 // #define SerialAT Serial0
 
 #include <ArduinoJson.h>
+#include <WiFiClientSecure.h>
 
 #ifdef DEBUG
 #define DEBUG_PRINT(x) SerialMon.print(x)

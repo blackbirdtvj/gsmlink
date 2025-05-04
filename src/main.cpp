@@ -31,6 +31,50 @@ void IRAM_ATTR ringISR()
 }
 #endif
 
+void syncNTPGSM()
+{
+    if (isNTPSet)
+        return;
+
+    // modem.NTPServerSync("pool.ntp.org", 20);
+
+    struct timeval now;
+    struct timezone tz;
+
+    tz.tz_dsttime = 0;
+    tz.tz_minuteswest = -210;
+
+    int ntp_year = 0;
+    int ntp_month = 0;
+    int ntp_day = 0;
+    int ntp_hour = 0;
+    int ntp_min = 0;
+    int ntp_sec = 0;
+    float ntp_timezone = 0;
+    if (!modem.getNetworkTime(&ntp_year, &ntp_month, &ntp_day, &ntp_hour,
+                              &ntp_min, &ntp_sec, &ntp_timezone))
+    {
+        DEBUG_PRINTLN("failed gsm ntp");
+        ESP.restart();
+    }
+    struct tm timeinfo;
+    timeinfo.tm_year = ntp_year - 1900; // tm_year is years since 1900
+    timeinfo.tm_mon = ntp_month - 1;    // tm_mon is 0-11, so subtract 1
+    timeinfo.tm_mday = ntp_day;
+    timeinfo.tm_hour = ntp_hour;
+    timeinfo.tm_min = ntp_min;
+    timeinfo.tm_sec = ntp_sec;
+
+    now.tv_sec = mktime(&timeinfo);
+    now.tv_usec = 0;
+
+    settimeofday(&now, NULL);
+
+    time_t tnow = time(nullptr);
+    DEBUG_PRINTLN("Synced NTP using GSM time");
+    DEBUG_PRINTLN(String(ctime(&tnow)));
+}
+
 void syncNTPTime(uint32_t timeout = 10000)
 {
     if (isNTPSet)
@@ -101,8 +145,10 @@ void setup()
         Update.rollBack();
         ESP.restart();
     }
-
     syncNTPTime(30000);
+    if (!isNTPSet)
+        syncNTPGSM();
+
     ArduinoOTA
         .onStart([]()
                  { detachInterrupt(MODEM_RING_PIN); })
